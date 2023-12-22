@@ -10,7 +10,7 @@ Built with React and Agora
 - `npm install`
 - `yarn start or npm start`
   
-## Docker Demo
+## Docker demo
 
 ```bash
 docker run -itd --rm -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
