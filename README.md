@@ -13,5 +13,5 @@ Built with React and Agora
 ## Docker Installation
 
 ```bash
-docker run -itd --rm -v ${PWD}:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
+docker run -itd --rm -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
 ```
