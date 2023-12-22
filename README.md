@@ -10,20 +10,9 @@ Built with React and Agora
 - `npm install`
 - `yarn start or npm start`
   
-## Docker Installation
+## Docker Demo
 
-### Unix
 ```bash
-docker run -itd --rm -v ${PWD}:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
+docker run -itd --rm -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
 ```
-
-### Windows
-
-#### CMD
-```bash
-docker run -itd --rm -v %cd%:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
-```
-#### PowerShell
-```bash
-docker run -itd --rm -v ${PWD}:/app -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
-```
+Open `localhost:3001` in your browser and you will find the app running!
