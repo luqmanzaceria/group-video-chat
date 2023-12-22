@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { config, useClient, useMicrophoneAndCameraTracks} from "/settings.js"
+import { config, useClient, useMicrophoneAndCameraTracks, channelName} from "./settings.js"
 import { Grid } from "@material-ui/core";
+import Video from "./Video";
+import Controls from "./Controls"
 
 export default function VideoCall(props) {
     const { setInCall } = props;
@@ -66,7 +68,7 @@ export default function VideoCall(props) {
             )}
         </Grid>
         <Grid item style={{height: "95%"}}>
-            { start && tracks && (<Videos tracks={tracks} users={users} />)}
+            { start && tracks && (<Video tracks={tracks} users={users} />)}
         </Grid>
     </Grid>)
 }

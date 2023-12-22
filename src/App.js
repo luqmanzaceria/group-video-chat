@@ -1,11 +1,14 @@
 import { useState } from "react";
+import  { Button } from "@material-ui/core";
+import VideoCall from "./VideoCall"
 
 function App() {
   const [inCall, setInCall] = useState(false);
 
   return (
     <div className="App">
-      { inCall ? "We are in the call!" : "Waiting to join call!"}
+      <Button variant="contained" color="primary" onClick={ () => setInCall(true)}>Join Call</Button>
+      { inCall ? <VideoCall setInCall={setInCall} /> : "Waiting to join call!"}
     </div>
   );
 }
