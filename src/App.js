@@ -1,6 +1,12 @@
+import { useState } from "react";
+
 function App() {
+  const [inCall, setInCall] = useState(false);
+
   return (
-    <div className="App"></div>
+    <div className="App">
+      { inCall ? "We are in the call!" : "Waiting to join call!"}
+    </div>
   );
 }
 
