@@ -16,3 +16,10 @@ Built with React and Agora
 docker run -itd --rm -v /app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true luqmanzaceria/group-video-chat
 ```
 Open `localhost:3001` in your browser and you will find the app running!
+
+## Hosting app publicly
+- `npm start` and note the port your dev build is running on
+- Download ngrok
+- Place ngrok.exe in chosen directory
+- Navigate to that directory and run `./ngrok HTTP <port of dev build>`
+- Share the generated ngrok forwarding link with friends to video chat!
