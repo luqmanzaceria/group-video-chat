@@ -3,6 +3,8 @@ Built with React and Agora
 
 <img width="1506" alt="group_video_chat_demo" src="https://github.com/luqmanzaceria/group-video-chat/assets/47729606/b72cb6a9-9ec5-4e0f-9c5c-209141882e0a">
 
+## Agora Token
+First, generate a [new temp token](https://docs.agora.io/en/video-calling/reference/manage-agora-account?platform=web#generate-a-temporary-token) and replace the appId and token in `settings.js`.
 ## Setup
 
 - [Install Node.js](https://nodejs.org/en/)
