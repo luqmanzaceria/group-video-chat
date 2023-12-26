@@ -20,5 +20,9 @@ RUN npm install --force
 # Add app
 COPY . ./
 
+# Copy start script and grant execution permissions
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Start app
-CMD ["npm", "start"]
+CMD ["./start.sh"]

@@ -1,76 +1,98 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  config,
-  useClient,
+  createAgoraConfig,
   useMicrophoneAndCameraTracks,
   channelName,
 } from "./settings.js";
 import { Grid } from "@material-ui/core";
 import Video from "./Video";
 import Controls from "./Controls";
+import AgoraRTC from 'agora-rtc-sdk-ng'; // import AgoraRTC
 
 export default function VideoCall(props) {
   const { setInCall } = props;
   const [users, setUsers] = useState([]);
   const [start, setStart] = useState(false);
-  const client = useClient();
+  const [client, setClient] = useState(() => AgoraRTC.createClient({ mode: "rtc", codec: "vp8" })); // Initialize the client here
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
   useEffect(() => {
-    let init = async (name) => {
-      client.on("user-published", async (user, mediaType) => {
+    let mounted = true; // To prevent state update if the component is unmounted
+    const uid = Math.floor(Math.random() * 10000); // Generate a random UID for demo purpose
+
+    // Asynchronously join the channel
+    const joinChannel = async () => {
+      try {
+        const agoraConfig = await createAgoraConfig(channelName, uid); // Get the Agora config with the token
+        await client.join(agoraConfig.appId, channelName, agoraConfig.token, uid);
+        if (tracks) {
+          await client.publish(tracks);
+        }
+        setStart(true);
+      } catch (error) {
+        console.log("Error joining Agora channel: ", error);
+      }
+    };
+
+    if (ready && tracks && !start && mounted) {
+      joinChannel();
+    }
+
+    return () => {
+      if (client && start) { // Check both client instance and if it has started/joined
+        client.leave().then(() => {
+          console.log('Left the channel successfully');
+        }).catch((error) => {
+          console.error('Failed to leave the channel:', error);
+        });
+        client.removeAllListeners();
+      }
+    };
+  }, [client, ready, tracks, start]);
+
+  // Handling the published/unpublished events
+  useEffect(() => {
+    if (client) {
+      const handleUserPublished = async (user, mediaType) => {
         await client.subscribe(user, mediaType);
         if (mediaType === "video") {
-          setUsers((prevUsers) => {
-            return [...prevUsers, user];
-          });
+          setUsers((prevUsers) => [...prevUsers, user]);
         }
         if (mediaType === "audio") {
           user.audioTrack.play();
         }
-      });
+      };
 
-      client.on("user-unpublished", (user, mediaType) => {
-        if (mediaType === "audio") {
-          if (user.audioTrack) user.audioTrack.stop();
+      const handleUserUnpublished = (user, mediaType) => {
+        if (mediaType === "audio" && user.audioTrack) {
+          user.audioTrack.stop();
         }
         if (mediaType === "video") {
-          setUsers((prevUsers) => {
-            return prevUsers.filter((User) => User.uid !== user.uid);
-          });
+          setUsers((prevUsers) => prevUsers.filter((User) => User.uid !== user.uid));
         }
-      });
+      };
 
+      client.on("user-published", handleUserPublished);
+      client.on("user-unpublished", handleUserUnpublished);
       client.on("user-left", (user) => {
-        setUsers((prevUsers) => {
-          return prevUsers.filter((User) => User.uid !== user.uid);
-        });
+        setUsers((prevUsers) => prevUsers.filter((User) => User.uid !== user.uid));
       });
 
-      try {
-        await client.join(config.appId, name, config.token, null);
-      } catch (error) {
-        console.log("error");
-      }
-
-      if (tracks) await client.publish([tracks[0], tracks[1]]);
-      setStart(true);
-    };
-
-    if (ready && tracks) {
-      try {
-        init(channelName);
-      } catch (error) {
-        console.log(error);
-      }
+      return () => {
+        client.off("user-published", handleUserPublished);
+        client.off("user-unpublished", handleUserUnpublished);
+        client.off("user-left");
+      };
     }
-  }, [channelName, client, ready, tracks]);
+  }, [client, users]);
 
   return (
     <Grid container direction="column" style={{ height: "100%" }}>
       <Grid item style={{ height: "5%" }}>
         {ready && tracks && (
-          <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
+          // Inside the VideoCall component's return statement
+          <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} client={client} />
+
         )}
       </Grid>
       <Grid item style={{ height: "95%" }}>

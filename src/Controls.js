@@ -8,8 +8,7 @@ import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 export default function Controls(props) {
-  const client = useClient();
-  const { tracks, setStart, setInCall } = props;
+  const { tracks, setStart, setInCall, client } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   const mute = async (type) => {
