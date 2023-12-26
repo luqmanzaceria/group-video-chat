@@ -10,6 +10,7 @@ Built with React and Agora
 - `npm install`
 - `yarn start or npm start` to start client
 - `cd server`
+- `npm install`
 - Define constants by creating a `.env` file like the `.env.example` file. Add Agora Credentials and the `PORT` we’re going to use to listen for requests.
 - `yarn start or npm start` to start server
   
