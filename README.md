@@ -22,9 +22,9 @@ docker run -itd --rm -v /app/node_modules -p 3001:3000 -p 8080:8080 -e CHOKIDAR_
 Open `localhost:3001` in your browser and you will find the app running!
 
 ## Hosting app publicly
-- `npm start` and note the port your dev build is running on
-- `cd server` and start with `npm start`
 - Download ngrok
-- Place ngrok.exe in chosen directory
-- Navigate to that directory and run `./ngrok http <port of dev build>`
+- Place `ngrok.exe` in chosen directory
+- `npm start` and note the port your dev build is running on
+- `cd server` and start server with `npm start`
+- Navigate to the directory that contains `ngrok.exe` and run `./ngrok http <port of dev build>`
 - Share the generated ngrok forwarding link with friends to video chat!
